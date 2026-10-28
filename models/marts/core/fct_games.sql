@@ -13,17 +13,17 @@ enriched as (
         year(strptime(release_date, '%b %d, %Y'))               as release_year,
         month(strptime(release_date, '%b %d, %Y'))              as release_month,
 
-        -- preço
+        -- price
         price_usd,
         price_usd = 0                                           as is_free,
         discount_pct,
         dlc_count,
 
-        -- donos (faixa → min/max)
+        -- owners (range -> min/max)
         split_part(estimated_owners, ' - ', 1)::integer         as owners_min,
         split_part(estimated_owners, ' - ', 2)::integer         as owners_max,
 
-        -- recepção
+        -- reception
         positive_reviews,
         negative_reviews,
         positive_reviews + negative_reviews                     as total_reviews,
@@ -31,14 +31,14 @@ enriched as (
                                                                 as positive_ratio,
         nullif(metacritic_score, 0)                             as metacritic_score,
 
-        -- engajamento
+        -- engagement
         peak_ccu,
         median_playtime_forever_min,
         median_playtime_2weeks_min,
         achievements_count,
         recommendations_count,
 
-        -- plataformas
+        -- platforms
         is_windows_supported,
         is_mac_supported,
         is_linux_supported,

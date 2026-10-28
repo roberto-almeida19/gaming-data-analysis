@@ -15,7 +15,7 @@ genres as (
 )
 
 select
-    md5(lower(genre_name))          as genre_id,     -- chave substituta estável
+    md5(lower(genre_name))          as genre_id,     -- stable surrogate key
     genre_name,
     game_count
 from genres

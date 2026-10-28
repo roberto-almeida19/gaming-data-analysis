@@ -10,7 +10,7 @@ renamed as (
         -- ids
         "AppID"                         as app_id,
 
-        -- descrição
+        -- description
         "Name"                          as game_name,
         "Release date"                  as release_date,
         "Estimated owners"              as estimated_owners,
@@ -26,17 +26,17 @@ renamed as (
         "Genres"                        as genres,
         "Tags"                          as tags,
 
-        -- preço
+        -- price
         "Price"                         as price_usd,
         "Discount"                      as discount_pct,
         "DLC count"                     as dlc_count,
 
-        -- plataformas
+        -- platforms
         "Windows"                       as is_windows_supported,
         "Mac"                           as is_mac_supported,
         "Linux"                         as is_linux_supported,
 
-        -- métricas
+        -- metrics
         "Peak CCU"                      as peak_ccu,
         "Metacritic score"              as metacritic_score,
         "User score"                    as user_score,
@@ -50,7 +50,7 @@ renamed as (
         "Median playtime forever"       as median_playtime_forever_min,
         "Median playtime two weeks"     as median_playtime_2weeks_min,
 
-        -- urls e mídia
+        -- urls and media
         "Header image"                  as header_image_url,
         "Website"                       as website_url,
         "Support url"                   as support_url,

@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: stg_games
+    description: "Staging model for Steam games (seed games.csv), with columns renamed to snake_case."
+    columns:
+      - name: app_id
+        description: "Steam game ID."
+        data_tests:
+          - unique
+          - not_null
+      - name: game_name
+        description: "Game name."
+      - name: release_date
+        description: "Release date as text (e.g. 'Aug 1, 2023')."
+      - name: estimated_owners
+        description: "Estimated owners range (e.g. '0 - 20000')."
+      - name: required_age
+        description: "Minimum required age."
+      - name: about_the_game
+        description: "Game description."
+      - name: supported_languages
+        description: "Supported languages (text formatted as a list)."
+      - name: full_audio_languages
+        description: "Languages with full audio."
+      - name: reviews
+        description: "Press review excerpts."
+      - name: notes
+        description: "Content notes (e.g. violence, adult content)."
+      - name: developers
+        description: "Developers, comma-separated."
+      - name: publishers
+        description: "Publishers, comma-separated."
+      - name: categories
+        description: "Steam categories, comma-separated."
+      - name: genres
+        description: "Genres, comma-separated."
+      - name: tags
+        description: "User tags, comma-separated."
+      - name: price_usd
+        description: "Price in USD."
+      - name: discount_pct
+        description: "Discount percentage."
+      - name: dlc_count
+        description: "Number of DLCs."
+      - name: is_windows_supported
+        description: "Whether the game runs on Windows."
+      - name: is_mac_supported
+        description: "Whether the game runs on macOS."
+      - name: is_linux_supported
+        description: "Whether the game runs on Linux."
+      - name: peak_ccu
+        description: "Peak concurrent users."
+      - name: metacritic_score
+        description: "Metacritic score (0 = no score)."
+      - name: user_score
+        description: "User score."
+      - name: positive_reviews
+        description: "Number of positive reviews."
+      - name: negative_reviews
+        description: "Number of negative reviews."
+      - name: score_rank
+        description: "Position in the score ranking."
+      - name: achievements_count
+        description: "Number of achievements."
+      - name: recommendations_count
+        description: "Number of recommendations."
+      - name: avg_playtime_forever_min
+        description: "Average playtime of all time, in minutes."
+      - name: avg_playtime_2weeks_min
+        description: "Average playtime over the last two weeks, in minutes."
+      - name: median_playtime_forever_min
+        description: "Median playtime of all time, in minutes."
+      - name: median_playtime_2weeks_min
+        description: "Median playtime over the last two weeks, in minutes."
+      - name: header_image_url
+        description: "Header image URL."
+      - name: website_url
+        description: "Official game website."
+      - name: support_url
+        description: "Support URL."
+      - name: support_email
+        description: "Support email."
+      - name: metacritic_url
+        description: "Metacritic page URL."
+      - name: screenshots
+        description: "Screenshot URLs, comma-separated."
+      - name: movies
+        description: "The source 'Movies' column (loaded as INTEGER in the seed schema)."

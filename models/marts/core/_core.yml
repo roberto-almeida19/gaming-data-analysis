@@ -2,38 +2,38 @@ version: 2
 
 models:
   - name: dim_genres
-    description: "Dimensão de gêneros da Steam. Uma linha por gênero."
+    description: "Steam genres dimension. One row per genre."
     columns:
       - name: genre_id
-        description: "Chave substituta (md5 do nome do gênero em minúsculas)."
+        description: "Surrogate key (md5 of the lowercased genre name)."
         data_tests:
           - unique
           - not_null
       - name: genre_name
-        description: "Nome do gênero como vem da Steam."
+        description: "Genre name as provided by Steam."
         data_tests:
           - unique
           - not_null
       - name: game_count
-        description: "Quantidade de jogos que têm esse gênero."
+        description: "Number of games with this genre."
         data_tests:
           - not_null
   - name: fct_games
-    description: "Fato de jogos da Steam. Uma linha por jogo, com métricas de preço, recepção e engajamento."
+    description: "Steam games fact table. One row per game, with price, reception and engagement metrics."
     columns:
       - name: app_id
-        description: "ID do jogo na Steam."
+        description: "Steam game ID."
         data_tests:
           - unique
           - not_null
       - name: release_date
-        description: "Data de lançamento."
+        description: "Release date."
         data_tests:
           - not_null
       - name: owners_min
-        description: "Limite inferior da faixa estimada de donos."
+        description: "Lower bound of the estimated owners range."
       - name: owners_max
-        description: "Limite superior da faixa estimada de donos."
+        description: "Upper bound of the estimated owners range."
       - name: release_month
         description: "Month of the release date (1-12)."
         data_tests:
@@ -49,6 +49,6 @@ models:
         data_tests:
           - not_null
       - name: positive_ratio
-        description: "Reviews positivas / total de reviews. Nulo quando não há reviews."
+        description: "Positive reviews / total reviews. Null when there are no reviews."
       - name: metacritic_score
-        description: "Nota no Metacritic. Nulo quando o jogo não tem nota."
+        description: "Metacritic score. Null when the game has no score."

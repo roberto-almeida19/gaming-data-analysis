@@ -3,15 +3,15 @@ version: 2
 models:
   - name: int_games_genres
     description: >
-      Tabela ponte jogo x gênero. Explode a coluna `genres` de stg_games
-      (lista separada por vírgula) em uma linha por par (app_id, genre).
-      Jogos sem gênero ficam de fora.
+      Game x genre bridge table. Explodes the comma-separated `genres` column
+      of stg_games into one row per (app_id, genre). Games without a genre
+      are excluded.
     data_tests:
       - unique:
           column_name: "app_id || '|' || genre"
     columns:
       - name: app_id
-        description: "ID do jogo na Steam."
+        description: "Steam game ID."
         data_tests:
           - not_null
           - relationships:
@@ -19,21 +19,21 @@ models:
                 to: ref('stg_games')
                 field: app_id
       - name: genre
-        description: "Nome do gênero, sem espaços nas pontas."
+        description: "Genre name, trimmed."
         data_tests:
           - not_null
 
   - name: int_games_publishers
     description: >
-      Tabela ponte jogo x publisher. Explode a coluna `publishers` de stg_games
-      (lista separada por vírgula) em uma linha por par (app_id, publisher).
-      Jogos sem publisher ficam de fora.
+      Game x publisher bridge table. Explodes the comma-separated `publishers`
+      column of stg_games into one row per (app_id, publisher). Games without
+      a publisher are excluded.
     data_tests:
       - unique:
           column_name: "app_id || '|' || publisher"
     columns:
       - name: app_id
-        description: "ID do jogo na Steam."
+        description: "Steam game ID."
         data_tests:
           - not_null
           - relationships:
@@ -41,7 +41,7 @@ models:
                 to: ref('stg_games')
                 field: app_id
       - name: publisher
-        description: "Nome da publisher, sem espaços nas pontas."
+        description: "Publisher name, trimmed."
         data_tests:
           - not_null
 
