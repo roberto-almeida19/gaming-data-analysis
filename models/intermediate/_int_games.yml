@@ -44,3 +44,25 @@ models:
         description: "Nome da publisher, sem espaços nas pontas."
         data_tests:
           - not_null
+
+  - name: int_games_developers
+    description: >
+      Game x developer bridge table. Explodes the comma-separated `developers`
+      column of stg_games into one row per (app_id, developer). Games without
+      a developer are excluded.
+    data_tests:
+      - unique:
+          column_name: "app_id || '|' || developer"
+    columns:
+      - name: app_id
+        description: "Steam game ID."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_games')
+                field: app_id
+      - name: developer
+        description: "Developer name, trimmed. A comma followed by a space is kept as part of the name (e.g. 'CyberStep, Inc.')."
+        data_tests:
+          - not_null

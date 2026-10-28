@@ -2,18 +2,10 @@ with source as (
 
     select * from {{ ref('stg_games') }}
 
-),
-
-exploded as (
-
-    select
-        app_id,
-        trim(unnest(string_split(genres, ','))) as genre
-    from source
-    where genres is not null
-      and genres <> ''
-
 )
 
-select * from exploded
-where genre <> ''
+-- distinct: the source sometimes repeats the same value within a list
+select distinct
+    app_id,
+    unnest({{ split_list_column('genres') }}) as genre
+from source

@@ -7,3 +7,4 @@ dev.duckdb
 dev.duckdb.wal
 seeds/raw_games.csv
 .superpowers/
+.user.yml
