@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: dim_genres
+    description: "Steam genres dimension. One row per genre."
+    columns:
+      - name: genre_id
+        description: "Surrogate key (md5 of the lowercased genre name)."
+        data_tests:
+          - unique
+          - not_null
+      - name: genre_name
+        description: "Genre name as provided by Steam."
+        data_tests:
+          - unique
+          - not_null
+      - name: game_count
+        description: "Number of games with this genre."
+        data_tests:
+          - not_null
+  - name: fct_games
+    description: "Steam games fact table. One row per game, with price, reception and engagement metrics."
+    columns:
+      - name: app_id
+        description: "Steam game ID."
+        data_tests:
+          - unique
+          - not_null
+      - name: release_date
+        description: "Release date."
+        data_tests:
+          - not_null
+      - name: owners_min
+        description: "Lower bound of the estimated owners range."
+      - name: owners_max
+        description: "Upper bound of the estimated owners range."
+      - name: release_month
+        description: "Month of the release date (1-12)."
+        data_tests:
+          - not_null
+      - name: owners_mid
+        description: "Midpoint of the estimated owners range: (owners_min + owners_max) / 2."
+      - name: est_revenue_usd
+        description: "Estimated revenue in USD: price_usd * owners_mid. Zero for free games."
+        data_tests:
+          - not_null
+      - name: is_horror
+        description: "True when Horror, Psychological Horror or Survival Horror is among the game's top 5 tags by votes. Never null."
+        data_tests:
+          - not_null
+      - name: positive_ratio
+        description: "Positive reviews / total reviews. Null when there are no reviews."
+      - name: metacritic_score
+        description: "Metacritic score. Null when the game has no score."

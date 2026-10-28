@@ -1,3 +1,16 @@
+
+target/
+dbt_packages/
+logs/
+.env
+dev.duckdb
+dev.duckdb.wal
+seeds/raw_games.csv
+.superpowers/
+.user.yml
+docs/superpowers/
+
+# --- GitHub Python template ---
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

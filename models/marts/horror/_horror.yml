@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: agg_horror_releases_by_year
+    description: "Horror share of game releases per year, 2014-2024. One row per release year."
+    columns:
+      - name: release_year
+        description: "Release year of the games (2014-2024)."
+        data_tests: [unique, not_null]
+      - name: total_games
+        description: "All games released that year."
+      - name: horror_games
+        description: "Horror games released that year."
+      - name: horror_share_pct
+        description: "Horror games as a percentage (0-100, unrounded) of all games released that year."
+
+  - name: agg_horror_revenue_by_year
+    description: "Horror share of estimated revenue per year, 2014-2024. One row per release year."
+    columns:
+      - name: release_year
+        description: "Release year of the games (2014-2024)."
+        data_tests: [unique, not_null]
+      - name: total_est_revenue_usd
+        description: "Estimated revenue (USD) of all games released that year."
+      - name: horror_est_revenue_usd
+        description: "Estimated revenue (USD) of horror games released that year."
+      - name: horror_revenue_share_pct
+        description: "Horror share of estimated revenue (0-100, unrounded) for that year."
+
+  - name: agg_horror_top_developers
+    description: "Developers ranked by number of horror games released 2014-2024. One row per developer."
+    columns:
+      - name: developer
+        description: "Developer name."
+        data_tests: [unique, not_null]
+      - name: horror_games
+        description: "Horror games by this developer."
+      - name: horror_est_revenue_usd
+        description: "Estimated revenue (USD) of this developer's horror games."
+      - name: rank
+        description: "Rank by horror_games desc, horror_est_revenue_usd desc, developer asc."
+        data_tests: [unique, not_null]
+
+  - name: agg_horror_top_publishers
+    description: "Publishers ranked by number of horror games released 2014-2024. One row per publisher."
+    columns:
+      - name: publisher
+        description: "Publisher name."
+        data_tests: [unique, not_null]
+      - name: horror_games
+        description: "Horror games by this publisher."
+      - name: horror_est_revenue_usd
+        description: "Estimated revenue (USD) of this publisher's horror games."
+      - name: rank
+        description: "Rank by horror_games desc, horror_est_revenue_usd desc, publisher asc."
+        data_tests: [unique, not_null]
+
+  - name: agg_horror_releases_by_month
+    description: "Seasonality of horror releases by calendar month, 2014-2024. One row per month."
+    columns:
+      - name: release_month
+        description: "Calendar month (1-12)."
+        data_tests: [unique, not_null]
+      - name: horror_games
+        description: "Horror games released in that month across the window."
+      - name: horror_share_of_horror_pct
+        description: "Month's share (0-100) of all horror releases in the window."
+      - name: all_games
+        description: "All games released in that month across the window."
+      - name: catalog_share_pct
+        description: "Month's share (0-100) of all game releases in the window."
