@@ -66,3 +66,30 @@ models:
         description: "Developer name, trimmed. A comma followed by a space is kept as part of the name (e.g. 'CyberStep, Inc.')."
         data_tests:
           - not_null
+
+  - name: int_games_tags
+    description: >
+      Game x tag bridge table. Explodes the comma-separated `tags` column of
+      stg_games into one row per (app_id, tag_position), keeping the 1-based
+      position of each tag in the source list (Steam orders tags by votes).
+      Games without tags are excluded.
+    data_tests:
+      - unique:
+          column_name: "app_id || '|' || tag_position"
+    columns:
+      - name: app_id
+        description: "Steam game ID."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_games')
+                field: app_id
+      - name: tag
+        description: "Tag name, trimmed."
+        data_tests:
+          - not_null
+      - name: tag_position
+        description: "1-based position of the tag in the source list."
+        data_tests:
+          - not_null
