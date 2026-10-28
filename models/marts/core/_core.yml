@@ -34,6 +34,20 @@ models:
         description: "Limite inferior da faixa estimada de donos."
       - name: owners_max
         description: "Limite superior da faixa estimada de donos."
+      - name: release_month
+        description: "Month of the release date (1-12)."
+        data_tests:
+          - not_null
+      - name: owners_mid
+        description: "Midpoint of the estimated owners range: (owners_min + owners_max) / 2."
+      - name: est_revenue_usd
+        description: "Estimated revenue in USD: price_usd * owners_mid. Zero for free games."
+        data_tests:
+          - not_null
+      - name: is_horror
+        description: "True when Horror, Psychological Horror or Survival Horror is among the game's top 5 tags by votes. Never null."
+        data_tests:
+          - not_null
       - name: positive_ratio
         description: "Reviews positivas / total de reviews. Nulo quando não há reviews."
       - name: metacritic_score

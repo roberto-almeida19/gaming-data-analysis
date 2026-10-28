@@ -11,6 +11,7 @@ enriched as (
         game_name,
         strptime(release_date, '%b %d, %Y')::date               as release_date,
         year(strptime(release_date, '%b %d, %Y'))               as release_year,
+        month(strptime(release_date, '%b %d, %Y'))              as release_month,
 
         -- preço
         price_usd,
@@ -42,10 +43,33 @@ enriched as (
         is_mac_supported,
         is_linux_supported,
         is_windows_supported::int + is_mac_supported::int + is_linux_supported::int
-                                                                as platform_count
+                                                                as platform_count,
+
+        -- horror flag: a horror tag among the top 5 tags by votes
+        coalesce(
+            exists (
+                select 1
+                from {{ ref('int_games_tags') }} as tags
+                where tags.app_id = games.app_id
+                  and tags.tag_position <= 5
+                  and tags.tag in ('Horror', 'Psychological Horror', 'Survival Horror')
+            ),
+            false
+        )                                                       as is_horror
 
     from games
 
+),
+
+with_revenue as (
+
+    select
+        *,
+        (owners_min + owners_max) / 2.0                         as owners_mid,
+        price_usd * (owners_min + owners_max) / 2.0             as est_revenue_usd
+
+    from enriched
+
 )
 
-select * from enriched
+select * from with_revenue
