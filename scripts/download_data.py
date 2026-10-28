@@ -10,7 +10,7 @@ from pathlib import Path
 
 import kagglehub
 
-DATASET = "fronkongames/steam-games-dataset"
+DATASET = "fronkongames/steam-games-dataset/versions/56"
 SOURCE_FILE = "games.csv"
 TARGET = Path(__file__).resolve().parent.parent / "seeds" / "raw_games.csv"
 

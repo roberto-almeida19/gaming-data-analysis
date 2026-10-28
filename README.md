@@ -28,14 +28,16 @@ flowchart LR
 | Layer | Purpose | Materialization | Tests |
 |---|---|---|---|
 | Seed (`raw_games`) | Raw Steam games CSV, loaded as is | table | 0 |
-| Staging (`stg_games`) | Rename to snake_case, cast types, clean sentinel values | view | 2 |
+| Staging (`stg_games`) | Rename source columns to snake_case | view | 2 |
 | Intermediate (`int_games_*`) | Unnest list columns (tags, developers, publishers, genres) into one row per item | view | 19 |
-| Marts, core (`fct_games`, `dim_genres`) | One row per game with `is_horror` and estimated revenue; genre dimension | table | 14 |
+| Marts, core (`fct_games`, `dim_genres`) | One row per game: parses types (release date, owners range), cleans sentinels (Metacritic 0 to null), adds `is_horror` and estimated revenue; genre dimension | table | 14 |
 | Marts, horror (`agg_horror_*`) | Aggregates behind the analysis below | table | 15 |
 
 50 tests in total: generic (`not_null`, `unique`, `relationships`) plus singular tests in `tests/` for tag positions, horror-flag examples, revenue examples, ratio ranges, company-suffix handling and cross-mart consistency. Tests are counted under the layer of the model they test.
 
 ## How to run
+
+Prerequisites: Python 3.10+ (tested on 3.11), a virtualenv, ~2 GB free disk for `dev.duckdb`. `kagglehub` downloads public datasets; if it asks for credentials, see the kagglehub docs. The script pins Kaggle dataset version 56.
 
 ```bash
 pip install -r requirements.txt
@@ -50,7 +52,7 @@ The repo ships a local `profiles.yml` (dbt picks it up from the project folder),
 ## Modeling decisions
 
 - **Horror is a tag, not a genre.** Steam has no "Horror" genre; it exists only as user tags. A game counts as horror if `Horror`, `Psychological Horror` or `Survival Horror` is in its **top 5 tags** (Steam orders tags by votes).
-- **Why top 5.** Without the rule, HELLDIVERS 2 and Path of Exile 2 (Horror at tag position 18 of 20) counted as horror and inflated 2024 horror revenue from about $491M to about $3.4B.
+- **Why top 5.** Without the rule, HELLDIVERS 2 and Path of Exile 2 (a horror tag at position 18 of 20) counted as horror and inflated 2024 horror revenue from about $491M to about $3.4B (those two alone add ~$2.2B).
 - **Commas inside studio names.** Studio lists are separated by `,`, but `, ` belongs inside names (for example `KRAFTON, Inc.`). The shared macro `split_list_column` protects it. It also re-attaches suffixes glued on with no space (`Rideon,Inc.` becomes `Rideon, Inc.`), so a few names differ from the raw text by one space.
 - **Broken upstream header.** The Kaggle CSV header contains `DiscountDLC count`; `scripts/download_data.py` fixes it to `Discount,DLC count`.
 - **Metacritic score 0 means "no score"** and is stored as null.
@@ -93,7 +95,7 @@ xychart-beta
 | 2024 | 20,033 | 1,433 | 7.2% | $490.5M | 3.0% |
 
 Takeaways:
-- Horror holds a steady 4.6-6.0% of releases, then jumps to 7.2% in 2024 (1,433 games, nearly double 2023's 780 after a catalog that grew about 37%).
+- Horror is 4.6-6.0% of releases from 2014 to 2023 and 7.2% in 2024 (1,433 games, nearly double 2023's 780 after a catalog that grew about 37%).
 - Revenue share is far more volatile (3.0-11.2%): a handful of hits drive it. 2024 has the most horror games but the lowest revenue share, because total Steam revenue that year ($16.1B) outgrew horror's.
 
 Highest-earning horror games in the window (estimated): Dead by Daylight (2016, $280M), Phasmophobia (2020, $210M), The Forest (2018, $161M), Little Nightmares (2017, $150M), Sons Of The Forest (2024, $139M).
@@ -158,6 +160,7 @@ October is the Halloween effect: 15.7% of all horror games launch that month, ag
 ### Limitations
 
 - 2025 and 2026 are excluded: they are incomplete in the source.
-- Many recent games have no tags yet, so the horror share may be understated for recent years.
-- The top-5 rule is a judgment call. The Forest and Sons Of The Forest qualify through `Horror` at tag position 4-5 (survival-horror borderline).
+- Many recent games have no tags yet: untagged games were 0.9% of releases in 2014 and 37.2% in 2024. They can never be flagged as horror, so the release share for recent years is likely understated. Revenue share is barely affected: untagged games are under 1.6% of estimated revenue every year.
+- The top-5 rule is a judgment call. The Forest (`Horror` at position 4) and Sons Of The Forest (`Survival Horror` at position 5) are borderline survival-horror entries.
+- Studio names are not deduplicated (for example `CAPCOM Co., Ltd.` and `Capcom` count separately).
 - Revenue is the estimate described above, not reported sales. Use it to compare, not as an absolute.

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_games
-    description: "Staging model for Steam games (seed games.csv), with columns renamed to snake_case."
+    description: "Staging model for Steam games (seed raw_games.csv), with columns renamed to snake_case."
     columns:
       - name: app_id
         description: "Steam game ID."

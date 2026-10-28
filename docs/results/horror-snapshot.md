@@ -1,6 +1,6 @@
 # Horror snapshot
 
-Snapshot of the marts in `dev.duckdb` on 2026-10-27; each table lists the query that produced it. Values are unrounded (percentages 0-100).
+Snapshot of the marts in `dev.duckdb` on 2026-10-27, built from Kaggle dataset version 56; each table lists the query that produced it. Values are unrounded (percentages 0-100).
 
 ## Horror releases and share by year
 
@@ -93,17 +93,28 @@ Query: `select * from agg_horror_releases_by_month order by release_month`
 
 ## Top 10 horror games by estimated revenue, 2014-2024 (with top-5 tags)
 
-Query: `select game_name, release_year, est_revenue_usd, top-5 tags (int_games_tags, tag_position <= 5) from fct_games where is_horror and release_year between 2014 and 2024 order by est_revenue_usd desc limit 10`
+Query:
+
+```sql
+select g.game_name, g.release_year, g.est_revenue_usd,
+       string_agg(t.tag, ', ' order by t.tag_position) as top5_tags
+from fct_games g
+join int_games_tags t on t.app_id = g.app_id and t.tag_position <= 5
+where g.is_horror and g.release_year between 2014 and 2024
+group by g.app_id, g.game_name, g.release_year, g.est_revenue_usd
+order by g.est_revenue_usd desc
+limit 10
+```
 
 |game_name|release_year|est_revenue_usd|top5_tags|
 |---|---|---|---|
-|Dead by Daylight|2016|279650000.0|Horror,Multiplayer,Survival Horror,Online Co-Op,Co-op|
-|Phasmophobia|2020|209850000.0|Horror,Online Co-Op,Multiplayer,Psychological Horror,Co-op|
-|The Forest|2018|160650000.0|Open World Survival Craft,Survival,Open World,Horror,Crafting|
-|Little Nightmares|2017|149925000.0|Horror,Atmospheric,Adventure,Singleplayer,Puzzle-Platformer|
-|Sons Of The Forest|2024|139350000.0|Survival,Open World,Multiplayer,Co-op,Survival Horror|
-|Resident Evil 4|2023|119925000.0|Horror,Action,Survival Horror,Third-Person Shooter,Singleplayer|
-|Lethal Company|2023|112350000.0|Online Co-Op,Horror,First-Person,Co-op,Survival Horror|
-|The Callisto Protocol™|2022|89985000.0|Horror,Sci-fi,Survival Horror,Third-Person Shooter,Space|
-|Resident Evil 2|2019|74925000.0|Zombies,Survival Horror,Horror,Singleplayer,Remake|
-|Layers of Fear (2016)|2016|69965000.0|Horror,Psychological Horror,Atmospheric,Walking Simulator,First-Person|
+|Dead by Daylight|2016|279650000.0|Horror, Multiplayer, Survival Horror, Online Co-Op, Co-op|
+|Phasmophobia|2020|209850000.0|Horror, Online Co-Op, Multiplayer, Psychological Horror, Co-op|
+|The Forest|2018|160650000.0|Open World Survival Craft, Survival, Open World, Horror, Crafting|
+|Little Nightmares|2017|149925000.0|Horror, Atmospheric, Adventure, Singleplayer, Puzzle-Platformer|
+|Sons Of The Forest|2024|139350000.0|Survival, Open World, Multiplayer, Co-op, Survival Horror|
+|Resident Evil 4|2023|119925000.0|Horror, Action, Survival Horror, Third-Person Shooter, Singleplayer|
+|Lethal Company|2023|112350000.0|Online Co-Op, Horror, First-Person, Co-op, Survival Horror|
+|The Callisto Protocol™|2022|89985000.0|Horror, Sci-fi, Survival Horror, Third-Person Shooter, Space|
+|Resident Evil 2|2019|74925000.0|Zombies, Survival Horror, Horror, Singleplayer, Remake|
+|Layers of Fear (2016)|2016|69965000.0|Horror, Psychological Horror, Atmospheric, Walking Simulator, First-Person|
