@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: stg_games
+    description: "Staging dos jogos da Steam (seed games.csv), com colunas renomeadas para snake_case."
+    columns:
+      - name: app_id
+        description: "ID do jogo na Steam."
+        data_tests:
+          - unique
+          - not_null
+      - name: game_name
+        description: "Nome do jogo."
+      - name: release_date
+        description: "Data de lançamento como texto (ex.: 'Aug 1, 2023')."
+      - name: estimated_owners
+        description: "Faixa estimada de donos (ex.: '0 - 20000')."
+      - name: required_age
+        description: "Idade mínima exigida."
+      - name: about_the_game
+        description: "Descrição do jogo."
+      - name: supported_languages
+        description: "Lista de idiomas suportados (texto no formato de lista)."
+      - name: full_audio_languages
+        description: "Lista de idiomas com áudio completo."
+      - name: reviews
+        description: "Trechos de reviews da imprensa."
+      - name: notes
+        description: "Observações sobre conteúdo (ex.: violência, conteúdo adulto)."
+      - name: developers
+        description: "Desenvolvedoras, separadas por vírgula."
+      - name: publishers
+        description: "Publicadoras, separadas por vírgula."
+      - name: categories
+        description: "Categorias da Steam, separadas por vírgula."
+      - name: genres
+        description: "Gêneros, separados por vírgula."
+      - name: tags
+        description: "Tags de usuários, separadas por vírgula."
+      - name: price_usd
+        description: "Preço em USD."
+      - name: discount_pct
+        description: "Desconto em percentual."
+      - name: dlc_count
+        description: "Quantidade de DLCs."
+      - name: is_windows_supported
+        description: "Indica se o jogo roda no Windows."
+      - name: is_mac_supported
+        description: "Indica se o jogo roda no macOS."
+      - name: is_linux_supported
+        description: "Indica se o jogo roda no Linux."
+      - name: peak_ccu
+        description: "Pico de usuários simultâneos."
+      - name: metacritic_score
+        description: "Nota no Metacritic (0 = sem nota)."
+      - name: user_score
+        description: "Nota dos usuários."
+      - name: positive_reviews
+        description: "Quantidade de reviews positivas."
+      - name: negative_reviews
+        description: "Quantidade de reviews negativas."
+      - name: score_rank
+        description: "Posição no ranking de nota."
+      - name: achievements_count
+        description: "Quantidade de conquistas."
+      - name: recommendations_count
+        description: "Quantidade de recomendações."
+      - name: avg_playtime_forever_min
+        description: "Tempo médio de jogo desde sempre, em minutos."
+      - name: avg_playtime_2weeks_min
+        description: "Tempo médio de jogo nas últimas duas semanas, em minutos."
+      - name: median_playtime_forever_min
+        description: "Tempo mediano de jogo desde sempre, em minutos."
+      - name: median_playtime_2weeks_min
+        description: "Tempo mediano de jogo nas últimas duas semanas, em minutos."
+      - name: header_image_url
+        description: "URL da imagem de capa."
+      - name: website_url
+        description: "Site oficial do jogo."
+      - name: support_url
+        description: "URL de suporte."
+      - name: support_email
+        description: "E-mail de suporte."
+      - name: metacritic_url
+        description: "URL da página no Metacritic."
+      - name: screenshots
+        description: "URLs das screenshots, separadas por vírgula."
+      - name: movies
+        description: "Coluna 'Movies' da fonte (veio como INTEGER no schema)."

@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dim_genres
+    description: "Dimensão de gêneros da Steam. Uma linha por gênero."
+    columns:
+      - name: genre_id
+        description: "Chave substituta (md5 do nome do gênero em minúsculas)."
+        data_tests:
+          - unique
+          - not_null
+      - name: genre_name
+        description: "Nome do gênero como vem da Steam."
+        data_tests:
+          - unique
+          - not_null
+      - name: game_count
+        description: "Quantidade de jogos que têm esse gênero."
+        data_tests:
+          - not_null
+  - name: fct_games
+    description: "Fato de jogos da Steam. Uma linha por jogo, com métricas de preço, recepção e engajamento."
+    columns:
+      - name: app_id
+        description: "ID do jogo na Steam."
+        data_tests:
+          - unique
+          - not_null
+      - name: release_date
+        description: "Data de lançamento."
+        data_tests:
+          - not_null
+      - name: owners_min
+        description: "Limite inferior da faixa estimada de donos."
+      - name: owners_max
+        description: "Limite superior da faixa estimada de donos."
+      - name: positive_ratio
+        description: "Reviews positivas / total de reviews. Nulo quando não há reviews."
+      - name: metacritic_score
+        description: "Nota no Metacritic. Nulo quando o jogo não tem nota."
